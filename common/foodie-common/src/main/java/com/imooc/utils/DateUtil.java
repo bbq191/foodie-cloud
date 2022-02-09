@@ -196,7 +196,7 @@ public class DateUtil {
    * @param isoString
    * @param field the time field.
    * @param up Indicates if rolling up or rolling down the field value.
-   * @param expanded use formating char's
+   * @param fmt use formating char's
    * @exception ParseException if an unknown field value is given.
    */
   public static final String roll(String isoString, String fmt, int field, boolean up)
@@ -260,13 +260,13 @@ public class DateUtil {
 
   /** @return Timestamp */
   public static java.sql.Timestamp getCurrentTimestamp() {
-    return new java.sql.Timestamp(new Date().getTime());
+    return new java.sql.Timestamp(System.currentTimeMillis());
   }
 
   /**
    * java.util.Date
    *
-   * @param dateText
+   * @param dateString
    * @param format
    * @return
    */
@@ -278,7 +278,7 @@ public class DateUtil {
   /**
    * java.util.Date
    *
-   * @param dateText
+   * @param dateString
    */
   public static Date stringToDate(String dateString) {
     return stringToDate(dateString, ISO_EXPANDED_DATE_FORMAT, LENIENT_DATE);
@@ -346,7 +346,6 @@ public class DateUtil {
   /**
    * 返回固定格式的当前时间 yyyy-MM-dd hh:mm:ss
    *
-   * @param date
    * @return
    */
   public static String dateToStringWithTime() {
@@ -381,7 +380,7 @@ public class DateUtil {
 
   /**
    * @param date
-   * @param days
+   * @param mnt
    * @return java.util.Date
    */
   public static Date dateIncreaseByMonth(Date date, int mnt) {
