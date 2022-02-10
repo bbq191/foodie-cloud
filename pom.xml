@@ -11,6 +11,7 @@
   <modules>
     <module>common/foodie-common</module>
     <module>common/foodie-shared-pojo</module>
+    <module>platform/registry-center</module>
   </modules>
 
   <dependencyManagement>
