@@ -13,6 +13,8 @@
     <module>common/foodie-shared-pojo</module>
     <module>platform/registry-center</module>
     <module>common/foodie-web-components</module>
+    <module>domain/item/item-pojo</module>
+    <module>domain/item/item-mapper</module>
   </modules>
 
   <dependencyManagement>
