@@ -1,0 +1,30 @@
+############################################################
+#配置数据源信息
+############################################################
+spring:
+  datasource: #数据源的相关配置
+    url: jdbc:mariadb://localhost:3306/foodie-shop-dev?useUnicode=true&characterEncoding=UTF-8&autoReconnect=TRUE
+    username: root
+    password:
+  redis:
+    # 单机实例
+    database: 0
+    host: localhost
+    password:
+    port: 6379
+    # 哨兵模式
+    #    sentinel:
+    #      master: master
+    #      nodes: localhost:26379
+    # 集群模式
+  #    cluster:
+  #      nodes: localhost:6379,localhost:6379
+############################################################
+#web访问端口号 约定：8088
+############################################################
+server:
+  port: 10001
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #输出mybatis日志记录
