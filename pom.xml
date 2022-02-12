@@ -18,6 +18,11 @@
     <module>domain/item/item-api</module>
     <module>domain/item/item-service</module>
     <module>domain/item/item-web</module>
+    <module>domain/user/user-pojo</module>
+    <module>domain/user/user-mapper</module>
+    <module>domain/user/user-api</module>
+    <module>domain/user/user-service</module>
+    <module>domain/user/user-web</module>
   </modules>
 
   <dependencyManagement>

@@ -1,11 +1,11 @@
-package com.imooc.service.impl;
+package com.imooc.item.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.imooc.item.mapper.ItemsCommentsMapperCustom;
 import com.imooc.item.pojo.vo.MyCommentVo;
+import com.imooc.item.service.BaseService;
+import com.imooc.item.service.ItemCommentsService;
 import com.imooc.pojo.PagedGridResult;
-import com.imooc.service.BaseService;
-import com.imooc.service.ItemCommentsService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

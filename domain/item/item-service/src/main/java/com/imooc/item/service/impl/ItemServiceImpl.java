@@ -1,4 +1,4 @@
-package com.imooc.service.impl;
+package com.imooc.item.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -18,8 +18,8 @@ import com.imooc.item.pojo.ItemsSpec;
 import com.imooc.item.pojo.vo.CommentLevelCountsVo;
 import com.imooc.item.pojo.vo.ItemCommentVo;
 import com.imooc.item.pojo.vo.ShopCartVo;
+import com.imooc.item.service.ItemService;
 import com.imooc.pojo.PagedGridResult;
-import com.imooc.service.ItemService;
 import com.imooc.utils.DesensitizationUtil;
 import java.util.ArrayList;
 import java.util.Collections;

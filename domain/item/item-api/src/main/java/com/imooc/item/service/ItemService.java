@@ -1,4 +1,4 @@
-package com.imooc.service;
+package com.imooc.item.service;
 
 import com.imooc.item.pojo.Items;
 import com.imooc.item.pojo.ItemsImg;
