@@ -13,9 +13,9 @@ public class BaseController {
   public static final String REDIS_USER_TOKEN = "redis_user_token";
 
   /** 微信支付成功 -> 支付中心 -> shopping平台 // |-> 回调通知 URL */
-  String payReturnUrl = "http://localhost:8088//orders/notifyMerchantOrderPaid";
+  public String payReturnUrl = "http://localhost:8088//orders/notifyMerchantOrderPaid";
   /** 支付中心的调用地址 */
-  String paymentUrl = "http://payment.t.mukewang.com/foodie-payment/payment/createMerchantOrder";
+  public String paymentUrl = "http://payment.t.mukewang.com/foodie-payment/payment/createMerchantOrder";
   /** 用户上传头像的位置 */
   public static final String IMAGE_USER_FACE_LOCATION =
       File.separator
@@ -30,20 +30,6 @@ public class BaseController {
           + "foodie"
           + File.separator
           + "faces";
-
-  // FIXME: 需要移动到订单中心
-  /**
-   * 用于验证用户和订单是否有关联关系，避免非法用户调用
-   *
-   * @return 检查结果
-   */
-  //  public IMOOCJSONResult checkUserOrder(String userId, String orderId) {
-  //    Orders order = myOrdersService.queryMyOrder(userId, orderId);
-  //    if (order == null) {
-  //      return IMOOCJSONResult.errorMsg("订单不存在！");
-  //    }
-  //    return IMOOCJSONResult.ok(order);
-  //  }
 
   /**
    * 将用户数据转换为 redis 可用的 vo 对象

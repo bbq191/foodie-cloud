@@ -26,7 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AddressController {
 
   @Qualifier("addressServiceImpl")
-  @Autowired private AddressService addressService;
+  @Autowired
+  private AddressService addressService;
 
   @ApiOperation(value = "根据用户id查询收货地址列表", notes = "根据用户id查询收货地址列表", httpMethod = "POST")
   @PostMapping("/list")
