@@ -45,10 +45,11 @@
       and os.order_status = #{paramsMap.orderStatus}
     </if>
     ORDER BY
-    od.updated_time ASC
+    od.updated_time
   </select>
 
-  <select id="getSubItems" parameterType="String" resultType="com.imooc.order.pojo.vo.MySubOrderItemVo">
+  <select id="getSubItems" parameterType="String"
+    resultType="com.imooc.order.pojo.vo.MySubOrderItemVo">
     select oi.item_id        as itemId,
            oi.item_name      as itemName,
            oi.item_img       as itemImg,

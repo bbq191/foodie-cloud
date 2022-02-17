@@ -142,7 +142,7 @@ public class MyOrdersServiceImpl extends BaseService implements MyOrdersService 
 
   @Override
   public IMOOCJSONResult checkUserOrder(String userId, String orderId) {
-    Orders order = queryMyOrder(userId,orderId);
+    Orders order = queryMyOrder(userId, orderId);
     if (order == null) {
       return IMOOCJSONResult.errorMap("订单不存在");
     }
