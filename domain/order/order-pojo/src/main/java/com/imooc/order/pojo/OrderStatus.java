@@ -5,7 +5,9 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 @Table(name = "order_status")
 public class OrderStatus {
   /** 订单ID;对应订单表的主键id */

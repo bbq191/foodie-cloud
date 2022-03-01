@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 @Api(
     value = "商品接口",
     tags = {"商品信息展示的相关接口"})

@@ -3,7 +3,9 @@ package com.imooc.controller;
 import java.io.File;
 import org.springframework.stereotype.Controller;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 @Controller
 public class BaseController {
 

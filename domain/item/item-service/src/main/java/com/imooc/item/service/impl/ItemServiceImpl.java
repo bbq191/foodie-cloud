@@ -34,7 +34,9 @@ import org.springframework.web.bind.annotation.RestController;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 @RestController
 @Slf4j
 public class ItemServiceImpl implements ItemService {

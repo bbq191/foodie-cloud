@@ -10,7 +10,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 @ApiModel(value = "用户对象", description = "从客户端，由用户传入的数据封装在此entity中")
 public class CenterUserBo {
   @ApiModelProperty(value = "用户名", name = "username", example = "json")

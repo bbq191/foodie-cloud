@@ -1,6 +1,8 @@
 package com.imooc.enums;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 public enum OrderStatusEnum {
   /** 订单状态 枚举 */
   WAIT_PAY(10, "待付款"),

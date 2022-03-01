@@ -1,6 +1,8 @@
 package com.imooc.order.pojo.vo;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 public class MerchantOrdersVo {
   /** 商户订单号 */
   private String merchantOrderId;

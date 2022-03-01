@@ -258,7 +258,9 @@ public class DateUtil {
     }
   }
 
-  /** @return Timestamp */
+  /**
+   * @return Timestamp
+   */
   public static java.sql.Timestamp getCurrentTimestamp() {
     return new java.sql.Timestamp(System.currentTimeMillis());
   }
@@ -318,7 +320,9 @@ public class DateUtil {
     return dateToString(date, ISO_EXPANDED_DATE_FORMAT);
   }
 
-  /** @return */
+  /**
+   * @return
+   */
   public static Date getCurrentDateTime() {
     Calendar calNow = Calendar.getInstance();
     Date dtNow = calNow.getTime();
@@ -588,7 +592,9 @@ public class DateUtil {
     return lastDate;
   }
 
-  /** @Description: 判断字符串日期是否匹配指定的格式化日期 */
+  /**
+   * @Description: 判断字符串日期是否匹配指定的格式化日期
+   */
   public static boolean isValidDate(String strDate, String formatter) {
     SimpleDateFormat sdf = null;
     ParsePosition pos = new ParsePosition(0);

@@ -4,6 +4,7 @@ import com.imooc.enums.OrderStatusEnum;
 import com.imooc.enums.YesOrNo;
 import com.imooc.item.pojo.Items;
 import com.imooc.item.pojo.ItemsSpec;
+import com.imooc.item.service.ItemService;
 import com.imooc.order.mapper.OrderItemsMapper;
 import com.imooc.order.mapper.OrderStatusMapper;
 import com.imooc.order.mapper.OrdersMapper;
@@ -17,30 +18,27 @@ import com.imooc.order.pojo.vo.OrderVo;
 import com.imooc.order.service.OrderService;
 import com.imooc.pojo.ShopCartBo;
 import com.imooc.user.pojo.UserAddress;
+import com.imooc.user.service.AddressService;
 import com.imooc.utils.DateUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 @Service
 public class OrderServiceImpl implements OrderService {
   @Autowired private OrdersMapper ordersMapper;
   @Autowired private OrderItemsMapper orderItemsMapper;
   @Autowired private OrderStatusMapper orderStatusMapper;
-  // todo 临时方案，feign后改造为服务间调用
-  @Autowired private LoadBalancerClient client;
-  @Autowired private RestTemplate restTemplate;
-  //  @Autowired private AddressService addressService;
-  //  @Autowired private ItemService itemService;
+  @Autowired private AddressService addressService;
+  @Autowired private ItemService itemService;
   @Autowired private Sid sid;
 
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -56,14 +54,7 @@ public class OrderServiceImpl implements OrderService {
     // 包邮费用设置为0
     int postAmount = 0;
     String orderId = sid.nextShort();
-    // fixme 等feign后再来简化
-    //    UserAddress address = addressService.queryUserAddres(addressId, userId);
-    ServiceInstance instance = client.choose("FOODIE-USER-SERVICE");
-    String url =
-        String.format(
-            "http://%s:%s/address-api/queryAddress?userId=%s&addressId=%s",
-            instance.getHost(), instance.getPort(), userId, addressId);
-    UserAddress address = restTemplate.getForObject(url, UserAddress.class);
+    UserAddress address = addressService.queryUserAddres(addressId, userId);
     // 1. 新订单数据保存
     Orders newOrder = new Orders();
     newOrder.setId(orderId);
@@ -106,34 +97,15 @@ public class OrderServiceImpl implements OrderService {
       assert cartItem != null;
       int buyCounts = cartItem.getBuyCounts();
       // 2.1 根据规格id，查询规格的具体信息，主要获取价格
-      // fixme 等feign后再来简化
-      //      ItemsSpec itemSpec = itemService.queryItemSpecById(itemSpecId);
-      ServiceInstance itemApi = client.choose("FOODIE-ITEM-SERVICE");
-      String itemSpecUrl =
-          String.format(
-              "http://%s:%s/item-api/itemSpec?specId=%s",
-              itemApi.getHost(), itemApi.getPort(), itemSpecId);
-      ItemsSpec itemSpec = restTemplate.getForObject(itemSpecUrl, ItemsSpec.class);
+      ItemsSpec itemSpec = itemService.queryItemSpecById(itemSpecId);
       assert itemSpec != null;
       totalAmount += itemSpec.getPriceNormal() * buyCounts;
       realPayAmount += itemSpec.getPriceDiscount() * buyCounts;
 
       // 2.2 根据商品id，获得商品信息以及商品图片
       String itemId = itemSpec.getItemId();
-      // fixme 等feign后再来简化
-      //      Items item = itemService.queryItemById(itemId);
-      String itemUrl =
-          String.format(
-              "http://%s:%s/item-api/item?itemId=%s", itemApi.getHost(), itemApi.getPort(), itemId);
-      Items item = restTemplate.getForObject(itemUrl, Items.class);
-      // fixme 等feign后再来简化
-      //      String imgUrl = itemService.queryItemMainImgById(itemId);
-      String itemImgUrl =
-          String.format(
-              "http://%s:%s/item-api/primaryImage?itemId=%s",
-              itemApi.getHost(), itemApi.getPort(), itemId);
-      String imgUrl = restTemplate.getForObject(itemImgUrl, String.class);
-
+      Items item = itemService.queryItemById(itemId);
+      String imgUrl = itemService.queryItemMainImgById(itemId);
       // 2.3 循环保存子订单数据到数据库
       String subOrderId = sid.nextShort();
       OrderItems subOrderItem = new OrderItems();
@@ -147,15 +119,8 @@ public class OrderServiceImpl implements OrderService {
       subOrderItem.setItemSpecName(itemSpec.getName());
       subOrderItem.setPrice(itemSpec.getPriceDiscount());
       orderItemsMapper.insert(subOrderItem);
-
       // 2.4 在用户提交订单以后，规格表中需要扣除库存
-      // fixme 等feign后再来简化
-      //            itemService.decreaseItemSpecStock(itemSpecId, buyCounts);
-      String decreaseItemSpecStockUrl =
-          String.format(
-              "http://%s:%s/address-api/decreaseItemSpecStock?itemSpecId=%s&buyCounts=%s",
-              itemApi.getHost(), itemApi.getPort(), itemSpecId, buyCounts);
-      restTemplate.postForLocation(decreaseItemSpecStockUrl, String.class);
+      itemService.decreaseItemSpecStock(itemSpecId, buyCounts);
     }
     newOrder.setTotalAmount(totalAmount);
     newOrder.setRealPayAmount(realPayAmount);

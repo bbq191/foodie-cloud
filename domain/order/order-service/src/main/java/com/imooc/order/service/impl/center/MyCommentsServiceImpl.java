@@ -2,6 +2,7 @@ package com.imooc.order.service.impl.center;
 
 import com.imooc.enums.YesOrNo;
 import com.imooc.item.service.BaseService;
+import com.imooc.item.service.ItemCommentsService;
 import com.imooc.order.mapper.OrderItemsMapper;
 import com.imooc.order.mapper.OrderStatusMapper;
 import com.imooc.order.mapper.OrdersMapper;
@@ -16,23 +17,20 @@ import java.util.List;
 import java.util.Map;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.RestController;
 
-/** @author afu */
-@Service
+/**
+ * @author afu
+ */
+@RestController
 public class MyCommentsServiceImpl extends BaseService implements MyCommentsService {
   @Autowired private OrderItemsMapper orderItemsMapper;
   @Autowired private OrdersMapper ordersMapper;
   @Autowired private OrderStatusMapper orderStatusMapper;
   @Autowired private Sid sid;
-  // todo 临时方案，feign后改造为服务间调用
-  @Autowired private LoadBalancerClient client;
-  @Autowired private RestTemplate restTemplate;
+  @Autowired private ItemCommentsService itemCommentsService;
 
   @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
   @Override
@@ -52,12 +50,7 @@ public class MyCommentsServiceImpl extends BaseService implements MyCommentsServ
     Map<String, Object> map = new HashMap<>(10);
     map.put("userId", userId);
     map.put("commentList", commentList);
-    //    itemsCommentsMapperCustom.saveComments(map);
-    ServiceInstance instance = client.choose("FOODIE-ITEM-SERVICE");
-    String url =
-        String.format(
-            "http://%s:%s/item-comments-api/saveComments", instance.getHost(), instance.getPort());
-    restTemplate.postForLocation(url, map);
+    itemCommentsService.saveComments(map);
     // 2. 修改订单表改已评价 orders
     Orders order = new Orders();
     order.setId(orderId);

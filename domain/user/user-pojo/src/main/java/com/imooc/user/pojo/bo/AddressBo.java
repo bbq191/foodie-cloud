@@ -1,6 +1,8 @@
 package com.imooc.user.pojo.bo;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 public class AddressBo {
   private String addressId;
   private String userId;

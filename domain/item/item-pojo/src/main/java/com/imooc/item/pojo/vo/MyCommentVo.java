@@ -2,7 +2,9 @@ package com.imooc.item.pojo.vo;
 
 import java.util.Date;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 public class MyCommentVo {
   private String commentId;
   private String content;

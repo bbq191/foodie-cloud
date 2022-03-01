@@ -1,6 +1,8 @@
 package com.imooc.enums;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 public enum CommentLevel {
   /** 枚举值 评价类型 */
   GOOD(1, "好评"),

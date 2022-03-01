@@ -13,7 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 @RestController
 @Slf4j
 public class ItemCommentsServiceImpl extends BaseService implements ItemCommentsService {

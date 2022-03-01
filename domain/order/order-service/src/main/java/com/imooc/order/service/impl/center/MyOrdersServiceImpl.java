@@ -24,7 +24,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 @Service
 public class MyOrdersServiceImpl extends BaseService implements MyOrdersService {
   @Autowired private OrdersMapperCustom ordersMapperCustom;

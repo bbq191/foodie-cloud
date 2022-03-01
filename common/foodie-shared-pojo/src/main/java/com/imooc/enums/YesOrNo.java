@@ -1,6 +1,8 @@
 package com.imooc.enums;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 public enum YesOrNo {
   /** 枚举值 是否 */
   NO(0, "否"),

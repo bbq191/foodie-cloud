@@ -1,6 +1,8 @@
 package com.imooc.order.pojo.bo.center;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 public class OrderItemsCommentBo {
 
   private String commentId;

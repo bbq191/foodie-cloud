@@ -3,7 +3,9 @@ package com.imooc.order.pojo.vo;
 import com.imooc.pojo.ShopCartBo;
 import java.util.List;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 public class OrderVo {
   private String orderId;
   private MerchantOrdersVo merchantOrdersVo;

@@ -3,7 +3,9 @@ package com.imooc.pojo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 @ApiModel(value = "商品对象BO", description = "从客户端，由前端传入的数据封装在此entity中")
 public class ShopCartBo {
   @ApiModelProperty(value = "商品 id", name = "itemId", example = "imooc", required = true)

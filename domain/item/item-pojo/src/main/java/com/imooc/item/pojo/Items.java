@@ -4,7 +4,9 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Id;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 public class Items {
   /** 商品主键id */
   @Id private String id;

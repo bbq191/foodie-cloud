@@ -33,7 +33,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 @Api(
     value = "用户信息接口",
     tags = {"用户信息相关接口"})

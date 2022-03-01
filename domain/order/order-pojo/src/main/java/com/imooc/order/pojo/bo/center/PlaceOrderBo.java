@@ -7,7 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -6,7 +6,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 import tk.mybatis.spring.annotation.MapperScan;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 @SpringBootApplication
 // 扫描 mybatis 通用 mapper 所在的包
 @MapperScan(basePackages = "com.imooc.cart.mapper")

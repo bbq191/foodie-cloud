@@ -4,13 +4,17 @@ import com.imooc.order.pojo.Orders;
 import com.imooc.order.pojo.vo.OrderStatusCountsVo;
 import com.imooc.pojo.IMOOCJSONResult;
 import com.imooc.pojo.PagedGridResult;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/** @author afu */
+/**
+ * @author afu
+ */
+@FeignClient("foodie-order-service")
 @RequestMapping("myorder-api")
 public interface MyOrdersService {
 

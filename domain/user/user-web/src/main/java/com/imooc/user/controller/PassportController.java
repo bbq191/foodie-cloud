@@ -26,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 @Api(
     value = "注册登录",
     tags = {"用于注册登录的相关接口"})

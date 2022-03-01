@@ -5,7 +5,9 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 @Table(name = "items_comments")
 public class ItemsComments {
   /** id主键 */

@@ -4,7 +4,9 @@ import com.github.pagehelper.PageInfo;
 import com.imooc.pojo.PagedGridResult;
 import java.util.List;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 public class BaseService {
   /**
    * 分页列表查询

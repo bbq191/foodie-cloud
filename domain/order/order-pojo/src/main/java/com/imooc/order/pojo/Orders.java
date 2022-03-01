@@ -4,7 +4,9 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Id;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 public class Orders {
   /** 订单主键;同时也是订单编号 */
   @Id private String id;

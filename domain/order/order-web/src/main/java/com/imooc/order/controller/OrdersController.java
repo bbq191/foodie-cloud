@@ -37,7 +37,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 @Api(
     value = "订单相关",
     tags = {"订单相关的api接口"})

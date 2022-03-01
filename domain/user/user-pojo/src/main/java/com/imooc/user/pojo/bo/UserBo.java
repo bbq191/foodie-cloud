@@ -3,7 +3,9 @@ package com.imooc.user.pojo.bo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 @ApiModel(value = "用户对象BO", description = "从客户端，由用户传入的数据封装在此entity中")
 public class UserBo {
   @ApiModelProperty(value = "用户名", name = "username", example = "imooc", required = true)

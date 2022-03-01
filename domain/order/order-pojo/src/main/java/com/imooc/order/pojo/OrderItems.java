@@ -4,7 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 @Table(name = "order_items")
 public class OrderItems {
   /** 主键id */

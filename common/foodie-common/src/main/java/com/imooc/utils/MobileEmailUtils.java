@@ -3,7 +3,9 @@ package com.imooc.utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 public class MobileEmailUtils {
 
   public static boolean checkMobileIsOk(String mobile) {

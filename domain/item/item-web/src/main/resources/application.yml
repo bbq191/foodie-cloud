@@ -29,6 +29,8 @@ spring:
       max-request-size: 512000  # 请求大小限制为500kb
   application:
     name: foodie-item-service
+  main:
+    allow-bean-definition-overriding: true #当bean名字一样当时候，允许覆盖注册
 ############################################################
 #mybatis配置
 ############################################################

@@ -1,6 +1,8 @@
 package com.imooc.enums;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 public enum Sex {
   /** 枚举值 性别 */
   woman(0, "女"),

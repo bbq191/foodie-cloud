@@ -1,6 +1,8 @@
 package com.imooc.enums;
 
-/** @author afu */
+/**
+ * @author afu
+ */
 public enum PayMethod {
   /** 支付方式 枚举 */
   WEIXIN(1, "微信"),
