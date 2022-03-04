@@ -33,10 +33,9 @@
       <artifactId>order-mapper</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <!-- Todo 学到feign就可以移除依赖，进行服务间调用 -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+      <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
     </dependency>
   </dependencies>
 

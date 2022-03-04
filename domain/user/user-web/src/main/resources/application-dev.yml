@@ -23,8 +23,20 @@ spring:
 #web访问端口号 约定：8088
 ############################################################
 server:
-  port: 10002
+  port: 20001
 
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #输出mybatis日志记录
+
+# 开启所有actuactor-endpoint
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  security:
+    enabled: false
