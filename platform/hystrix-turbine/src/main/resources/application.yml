@@ -5,7 +5,7 @@ eureka:
 
 server:
   port: 10001
-  
+
 management:
   port: 11001
 

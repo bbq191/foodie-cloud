@@ -2,7 +2,6 @@ package com.imooc.order.controller.center;
 
 import com.imooc.controller.BaseController;
 import com.imooc.enums.YesOrNo;
-import com.imooc.item.service.ItemCommentsService;
 import com.imooc.order.fallback.itermservice.ItemCommentsFeignClient;
 import com.imooc.order.pojo.OrderItems;
 import com.imooc.order.pojo.Orders;

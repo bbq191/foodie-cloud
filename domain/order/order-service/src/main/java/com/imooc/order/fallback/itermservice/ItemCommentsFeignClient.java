@@ -21,5 +21,6 @@ import org.springframework.cloud.openfeign.FeignClient;
  * <p>3) 原始Feign接口不要定义@FeignClients注解，这样就不会被加载到上下文当中 * 优点：启动的时候直接扫包即可，不用指定加载接口，服务提供者不用额外配置 *
  * 缺点：任何情况下，服务调用者都需要声明一个额外@FeignCliet接口各有利弊，按照喜好来选就行，个人比较喜欢1），毕竟懒人
  */
-@FeignClient("foodie-item-service")
+// @FeignClient(value = "foodie-item-service", fallback = ItemCommentsFallback.class)
+@FeignClient(value = "foodie-item-service", fallbackFactory = ItemCommentsFallbackFactory.class)
 public interface ItemCommentsFeignClient extends ItemCommentsService {}
