@@ -1,5 +1,9 @@
 package com.imooc.order;
 
+import com.imooc.item.service.ItemService;
+import com.imooc.order.fallback.itermservice.ItemCommentsFeignClient;
+import com.imooc.user.service.AddressService;
+import com.imooc.user.service.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -16,7 +20,13 @@ import tk.mybatis.spring.annotation.MapperScan;
 @ComponentScan(basePackages = {"com.imooc", "org.n3r.idworker"})
 @EnableDiscoveryClient
 @EnableScheduling
-@EnableFeignClients(basePackages = {"com.imooc.user.service", "com.imooc.item.service"})
+@EnableFeignClients(
+    clients = {
+      ItemCommentsFeignClient.class,
+      ItemService.class,
+      UserService.class,
+      AddressService.class
+    })
 public class OrderApplication {
   public static void main(String[] args) {
     SpringApplication.run(OrderApplication.class);

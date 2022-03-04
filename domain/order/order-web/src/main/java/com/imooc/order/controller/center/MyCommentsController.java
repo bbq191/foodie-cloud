@@ -3,6 +3,7 @@ package com.imooc.order.controller.center;
 import com.imooc.controller.BaseController;
 import com.imooc.enums.YesOrNo;
 import com.imooc.item.service.ItemCommentsService;
+import com.imooc.order.fallback.itermservice.ItemCommentsFeignClient;
 import com.imooc.order.pojo.OrderItems;
 import com.imooc.order.pojo.Orders;
 import com.imooc.order.pojo.bo.center.OrderItemsCommentBo;
@@ -34,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MyCommentsController extends BaseController {
   @Autowired private MyCommentsService myCommentsService;
   @Autowired private MyOrdersService myOrdersService;
-  @Autowired private ItemCommentsService itemCommentsService;
+  @Autowired private ItemCommentsFeignClient itemCommentsService;
 
   @ApiOperation(value = "查询订单列表", notes = "查询订单列表", httpMethod = "POST")
   @PostMapping("/pending")

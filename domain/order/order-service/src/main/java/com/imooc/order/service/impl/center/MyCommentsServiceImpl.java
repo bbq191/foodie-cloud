@@ -2,7 +2,7 @@ package com.imooc.order.service.impl.center;
 
 import com.imooc.enums.YesOrNo;
 import com.imooc.item.service.BaseService;
-import com.imooc.item.service.ItemCommentsService;
+import com.imooc.order.fallback.itermservice.ItemCommentsFeignClient;
 import com.imooc.order.mapper.OrderItemsMapper;
 import com.imooc.order.mapper.OrderStatusMapper;
 import com.imooc.order.mapper.OrdersMapper;
@@ -30,7 +30,8 @@ public class MyCommentsServiceImpl extends BaseService implements MyCommentsServ
   @Autowired private OrdersMapper ordersMapper;
   @Autowired private OrderStatusMapper orderStatusMapper;
   @Autowired private Sid sid;
-  @Autowired private ItemCommentsService itemCommentsService;
+  //  @Autowired private ItemCommentsService itemCommentsService;
+  @Autowired private ItemCommentsFeignClient itemCommentsService;
 
   @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
   @Override
