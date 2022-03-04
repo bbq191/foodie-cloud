@@ -10,6 +10,8 @@ import com.imooc.utils.CookieUtils;
 import com.imooc.utils.JsonUtils;
 import com.imooc.utils.MD5Utils;
 import com.imooc.utils.RedisOperator;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.ArrayList;
@@ -93,6 +95,31 @@ public class PassportController extends BaseController {
 
   @ApiOperation(value = "用户登陆", notes = "用户登陆", httpMethod = "POST")
   @PostMapping("/login")
+  @HystrixCommand(
+      commandKey = "loginFail", // 全局唯一的标识服务，默认函数名称
+      groupKey = "password", // 全局服务分组，用于组织仪表盘，统计信息。默认：类名
+      fallbackMethod = "loginFail", // 同一个类里，public private都可以
+      // 在列表中的exception，不会触发降级
+      //      ignoreExceptions = {IllegalArgumentException.class},
+      // 线程有关的属性
+      // 线程组, 多个服务可以共用一个线程组
+      threadPoolKey = "threadPoolA",
+      threadPoolProperties = {
+        // 核心线程数
+        @HystrixProperty(name = "coreSize", value = "10"),
+        // size > 0, LinkedBlockingQueue -> 请求等待队列
+        // 默认-1 , SynchronousQueue -> 不存储元素的阻塞队列（建议读源码，学CAS应用）
+        @HystrixProperty(name = "maxQueueSize", value = "40"),
+        // 在maxQueueSize=-1的时候无效，队列没有达到maxQueueSize依然拒绝
+        @HystrixProperty(name = "queueSizeRejectionThreshold", value = "15"),
+        // （线程池）统计窗口持续时间
+        @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "2024"),
+        // （线程池）窗口内桶子的数量
+        @HystrixProperty(name = "metrics.rollingStats.numBuckets", value = "18"),
+      },
+      commandProperties = {
+        // TODO: 熔断降级相关属性，也可以放在这里
+      })
   public IMOOCJSONResult login(
       @RequestBody UserBo userBo, HttpServletRequest request, HttpServletResponse response) {
     String username = userBo.getUsername();
@@ -116,6 +143,12 @@ public class PassportController extends BaseController {
     // 同步购物车数据
     synchShopcartData(userResult.getId(), request, response);
     return IMOOCJSONResult.ok(userResult);
+  }
+
+  private IMOOCJSONResult loginFail(
+      UserBo userBo, HttpServletRequest request, HttpServletResponse response, Throwable throwable)
+      throws Exception {
+    return IMOOCJSONResult.errorMsg("验证码输错了（模仿12306）" + throwable.getLocalizedMessage());
   }
 
   @ApiOperation(value = "用户退出", notes = "用户退出并清理 cookie", httpMethod = "POST")
