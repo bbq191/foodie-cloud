@@ -1,0 +1,33 @@
+server:
+  port: 10003
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        # 属性重载
+        overrides:
+          test: mytest
+        git:
+          uri:
+          force-pull: true
+          # 将配置文件放到接入方服务名称对应文件夹下面
+          search-paths: '{application}'
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:10000/eureka/
+
+## 开启所有actuator-endpoint
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  security:
+    enabled: false
