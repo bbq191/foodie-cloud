@@ -10,7 +10,7 @@ spring:
         overrides:
           test: mytest
         git:
-          uri:
+          uri: https://github.com/bbq191/foodie-cloud-config.git
           force-pull: true
           # 将配置文件放到接入方服务名称对应文件夹下面
           search-paths: '{application}'

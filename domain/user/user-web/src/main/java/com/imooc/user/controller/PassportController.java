@@ -3,6 +3,7 @@ package com.imooc.user.controller;
 import com.imooc.controller.BaseController;
 import com.imooc.pojo.IMOOCJSONResult;
 import com.imooc.pojo.ShopCartBo;
+import com.imooc.user.UserApplicationProperties;
 import com.imooc.user.pojo.Users;
 import com.imooc.user.pojo.bo.UserBo;
 import com.imooc.user.service.UserService;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,6 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
     tags = {"用于注册登录的相关接口"})
 @RestController
 @RequestMapping("passport")
+@Slf4j
 public class PassportController extends BaseController {
 
   @Qualifier("userServiceImpl")
@@ -43,6 +46,7 @@ public class PassportController extends BaseController {
   private UserService userService;
 
   @Autowired private RedisOperator redisOperator;
+  @Autowired private UserApplicationProperties userApplicationProperties;
   private final int PASSWORD_MIN_LENGTH = 6;
 
   @ApiOperation(value = "用户名是否存在", notes = "用户名是否存在", httpMethod = "GET")
@@ -65,6 +69,10 @@ public class PassportController extends BaseController {
   @PostMapping("/regist")
   public IMOOCJSONResult regist(
       @RequestBody UserBo userBo, HttpServletRequest request, HttpServletResponse response) {
+    if (userApplicationProperties.isDisabledRegistration()) {
+      log.info("user registration is blocked - {}", userBo.getUsername());
+      return IMOOCJSONResult.errorMsg("当前用户注册过多，请等待再次开放");
+    }
     String username = userBo.getUsername();
     String password = userBo.getPassword();
     String confirmPwd = userBo.getConfirmPassword();

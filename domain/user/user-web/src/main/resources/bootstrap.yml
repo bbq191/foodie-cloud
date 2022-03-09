@@ -1,0 +1,19 @@
+############################################################
+# Eureka 注册中心
+############################################################
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:10000/eureka/
+
+############################################################
+# Eureka 注册中心
+############################################################
+spring:
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      profile: dev
+      label: main
