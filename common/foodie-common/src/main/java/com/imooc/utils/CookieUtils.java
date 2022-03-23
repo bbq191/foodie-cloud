@@ -225,7 +225,8 @@ public final class CookieUtils {
         cookie.setMaxAge(cookieMaxage);
       }
       if (null != request) { // 设置域名的cookie
-        String domainName = getDomainName(request);
+        //        String domainName = getDomainName(request);
+        String domainName = "localhost"; // fixme 仅限本地，上线改回来
         logger.info("========== domainName: {} ==========", domainName);
         if (!"localhost".equals(domainName)) {
           cookie.setDomain(domainName);
