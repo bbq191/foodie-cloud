@@ -35,6 +35,8 @@
     <module>platform/hystrix-dashboard</module>
     <module>platform/config-server</module>
     <module>platform/gateway</module>
+    <module>domain/auth/auth-api</module>
+    <module>domain/auth/auth-service</module>
   </modules>
 
   <dependencyManagement>
