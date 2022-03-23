@@ -1,0 +1,2 @@
+### 手动刷新配置文件
+POST http://localhost:10002/actuator/refresh

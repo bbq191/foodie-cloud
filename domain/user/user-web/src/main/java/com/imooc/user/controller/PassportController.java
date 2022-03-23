@@ -1,5 +1,9 @@
 package com.imooc.user.controller;
 
+import com.imooc.auth.service.AuthService;
+import com.imooc.auth.service.pojo.Account;
+import com.imooc.auth.service.pojo.AuthCode;
+import com.imooc.auth.service.pojo.AuthResponse;
 import com.imooc.controller.BaseController;
 import com.imooc.pojo.IMOOCJSONResult;
 import com.imooc.pojo.ShopCartBo;
@@ -16,6 +20,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,14 +45,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("passport")
 @Slf4j
 public class PassportController extends BaseController {
-
   @Qualifier("userServiceImpl")
   @Autowired
   private UserService userService;
 
+  @Autowired private AuthService authService;
   @Autowired private RedisOperator redisOperator;
   @Autowired private UserApplicationProperties userApplicationProperties;
   private final int PASSWORD_MIN_LENGTH = 6;
+  private static final String AUTH_HEADER = "Authorization";
+  private static final String REFRESH_TOKEN_HEADER = "refresh-token";
+  private static final String UID_HEADER = "imooc-user-id";
 
   @ApiOperation(value = "用户名是否存在", notes = "用户名是否存在", httpMethod = "GET")
   @GetMapping("/usernameIsExist")
@@ -144,6 +152,14 @@ public class PassportController extends BaseController {
     if (userResult == null) {
       return IMOOCJSONResult.errorMsg("用户名密码不正确");
     }
+    AuthResponse token = authService.tokenize(userResult.getId());
+    if (!AuthCode.SUCCESS.getCode().equals(token.getCode())) {
+      log.error("Token erroe - uid = {}", userResult.getId());
+      return IMOOCJSONResult.errorMsg("Token erroe");
+    }
+    // 将token添加到Header当中
+    addAuth2Header(response, token.getAccount());
+
     // 生成用户 token，存入 redis
     //    UsersVo usersVo = conventUsersVo(userResult);
     // 设置 cookie 值
@@ -163,6 +179,18 @@ public class PassportController extends BaseController {
   @PostMapping("/logout")
   public IMOOCJSONResult logout(
       @RequestParam String userId, HttpServletRequest request, HttpServletResponse response) {
+    Account account =
+        Account.builder()
+            .token(request.getHeader(AUTH_HEADER))
+            .refreshToken(request.getHeader(REFRESH_TOKEN_HEADER))
+            .userId(userId)
+            .build();
+    AuthResponse authResponse = authService.delete(account);
+    if (!AuthCode.SUCCESS.getCode().equals(authResponse.getCode())) {
+      log.error("Token erroe - uid = {}", userId);
+      return IMOOCJSONResult.errorMsg("Token erroe");
+    }
+
     // 清楚用户 cookie
     CookieUtils.deleteCookie(request, response, "user");
     // 分布式会话中需要清除用户数据
@@ -242,5 +270,19 @@ public class PassportController extends BaseController {
         CookieUtils.setCookie(request, response, FOODIE_SHOPCART, shopcartJsonRedis, true);
       }
     }
+  }
+
+  // TODO 修改前端js代码
+  // 在前端页面里拿到Authorization, refresh-token和imooc-user-id。
+  // 前端每次请求服务，都把这几个参数带上
+  private void addAuth2Header(HttpServletResponse response, Account token) {
+    response.setHeader(AUTH_HEADER, token.getToken());
+    response.setHeader(REFRESH_TOKEN_HEADER, token.getRefreshToken());
+    response.setHeader(UID_HEADER, token.getUserId());
+
+    // 让前端感知到，过期时间一天，这样可以在临近过期的时候refresh token
+    Calendar expTime = Calendar.getInstance();
+    expTime.add(Calendar.DAY_OF_MONTH, 1);
+    response.setHeader("token-exp-time", expTime.getTimeInMillis() + "");
   }
 }

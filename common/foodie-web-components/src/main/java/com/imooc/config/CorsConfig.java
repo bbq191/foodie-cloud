@@ -1,16 +1,16 @@
-//package com.imooc.config;
+// package com.imooc.config;
 //
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.web.cors.CorsConfiguration;
-//import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-//import org.springframework.web.filter.CorsFilter;
+// import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Configuration;
+// import org.springframework.web.cors.CorsConfiguration;
+// import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+// import org.springframework.web.filter.CorsFilter;
 //
-///**
+/// **
 // * @author afu
 // */
-//@Configuration
-//public class CorsConfig {
+// @Configuration
+// public class CorsConfig {
 //
 //  public CorsConfig() {}
 //
@@ -33,4 +33,4 @@
 //    // 返回定义好的 corsSource
 //    return new CorsFilter(corsSource);
 //  }
-//}
+// }
