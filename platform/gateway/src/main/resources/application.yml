@@ -2,6 +2,12 @@
 spring:
   application:
     name: platform-gateway
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     gateway:
       locator:
