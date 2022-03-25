@@ -18,7 +18,7 @@
       </pattern>
     </encoder>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>logs/auth-%d.log</fileNamePattern>
+      <fileNamePattern>logs/user-%d.log</fileNamePattern>
       <maxHistory>30</maxHistory>
     </rollingPolicy>
   </appender>
