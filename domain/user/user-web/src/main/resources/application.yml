@@ -24,6 +24,17 @@ spring:
     name: foodie-user-service
   main:
     allow-bean-definition-overriding: true #当bean名字一样当时候，允许覆盖注册
+  # 链路追踪
+  zipkin:
+    discoveryClientEnabled: true
+    sender:
+      type: web
+    locator:
+      discovery:
+        enabled: true
+  sleuth:
+    sampler:
+      probability: 1
 ############################################################
 #mybatis配置
 ############################################################

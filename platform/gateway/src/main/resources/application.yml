@@ -8,6 +8,7 @@ spring:
     database: 0
   main:
     allow-bean-definition-overriding: true
+  # 跨域配置
   cloud:
     gateway:
       globalcors:
@@ -32,6 +33,15 @@ spring:
         enabled: false
         lower-case-service-id: true
       # routes:
+  # 链路追踪
+  zipkin:
+    discoveryClientEnabled: true
+    locator:
+      discovery:
+        enabled: true
+  sleuth:
+    sampler:
+      probability: 1
 
 server:
   port: 10004
