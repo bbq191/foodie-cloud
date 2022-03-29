@@ -4,11 +4,13 @@ import com.imooc.controller.BaseController;
 import com.imooc.enums.OrderStatusEnum;
 import com.imooc.enums.PayMethod;
 import com.imooc.order.pojo.OrderStatus;
+import com.imooc.order.pojo.bo.OrderStatusCheckBo;
 import com.imooc.order.pojo.bo.SubmitOrderBo;
 import com.imooc.order.pojo.bo.center.PlaceOrderBo;
 import com.imooc.order.pojo.vo.MerchantOrdersVo;
 import com.imooc.order.pojo.vo.OrderVo;
 import com.imooc.order.service.OrderService;
+import com.imooc.order.stream.CheckOrderTopic;
 import com.imooc.pojo.IMOOCJSONResult;
 import com.imooc.pojo.ShopCartBo;
 import com.imooc.utils.CookieUtils;
@@ -31,6 +33,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +53,7 @@ public class OrdersController extends BaseController {
   @Autowired private OrderService orderService;
   @Autowired private RestTemplate restTemplate;
   @Autowired private RedisOperator redisOperator;
+  @Autowired private CheckOrderTopic orderStatusProducer;
 
   @ApiOperation(value = "用户下单", notes = "用户下单", httpMethod = "POST")
   @PostMapping("/create")
@@ -89,6 +93,8 @@ public class OrdersController extends BaseController {
     // 1. 创建订单
     PlaceOrderBo placeOrderBo = new PlaceOrderBo(submitOrderBo, shopcartList);
     OrderVo orderVo = orderService.createOrder(placeOrderBo);
+    String orderId = orderVo.getOrderId();
+
     // 2. 创建订单以后，移除购物车中已结算（已提交）的商品
     // 1001 2002 -> 用户购买 3003 -> 用户购买 4004
     assert shopcartList != null;
@@ -98,6 +104,18 @@ public class OrdersController extends BaseController {
     // 整合redis之后，完善购物车中的已结算商品清除，并且同步到前端的cookie
     CookieUtils.setCookie(
         request, response, FOODIE_SHOPCART, JsonUtils.objectToJson(shopcartList), true);
+
+    // order status检查
+    OrderStatusCheckBo msg = new OrderStatusCheckBo();
+    msg.setOrderID(orderId);
+    // 可以采用更短的Delay时间, 在consumer里面重新投递消息
+    orderStatusProducer
+        .output()
+        .send(
+            MessageBuilder.withPayload(msg)
+                .setHeader("x-delay", 3600 * 24 * 1000 + 300 * 1000)
+                .build());
+
     // 3. 向支付中心发送当前订单，用于保存支付中心的订单数据
     MerchantOrdersVo merchantOrdersVo = orderVo.getMerchantOrdersVo();
     merchantOrdersVo.setReturnUrl(payReturnUrl);

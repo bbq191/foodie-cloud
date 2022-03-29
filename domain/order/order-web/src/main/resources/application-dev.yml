@@ -19,6 +19,20 @@ spring:
     # 集群模式
   #    cluster:
   #      nodes: localhost:6379,localhost:6379
+  # 延迟消息
+  cloud:
+    stream:
+      bindings:
+        orderstatus-consumer:
+          destination: orderstatus-topic
+          group: order-group
+        orderstatus-producer:
+          destination: orderstatus-topic
+      rabbit:
+        bindings:
+          orderstatus-producer:
+            producer:
+              delayed-exchange: true
 ############################################################
 #web访问端口号 约定：8088
 ############################################################
