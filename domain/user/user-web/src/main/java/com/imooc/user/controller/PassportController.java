@@ -11,6 +11,7 @@ import com.imooc.user.UserApplicationProperties;
 import com.imooc.user.pojo.Users;
 import com.imooc.user.pojo.bo.UserBo;
 import com.imooc.user.service.UserService;
+import com.imooc.user.stream.ForceLogoutTopic;
 import com.imooc.utils.CookieUtils;
 import com.imooc.utils.JsonUtils;
 import com.imooc.utils.MD5Utils;
@@ -28,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,6 +54,7 @@ public class PassportController extends BaseController {
   @Autowired private AuthService authService;
   @Autowired private RedisOperator redisOperator;
   @Autowired private UserApplicationProperties userApplicationProperties;
+  @Autowired private ForceLogoutTopic producer;
   private final int PASSWORD_MIN_LENGTH = 6;
   private static final String AUTH_HEADER = "Authorization";
   private static final String REFRESH_TOKEN_HEADER = "refresh-token";
@@ -196,6 +199,20 @@ public class PassportController extends BaseController {
     // 分布式会话中需要清除用户数据
     redisOperator.del(REDIS_USER_TOKEN + ":" + userId);
     CookieUtils.deleteCookie(request, response, FOODIE_SHOPCART);
+    return IMOOCJSONResult.ok();
+  }
+
+  // FIXME 将这个接口从网关层移除，不对外暴露
+  // 简陋版api - 长得丑但是跑得快
+  @ApiOperation(value = "用户强制退出登录", notes = "用户退出登录", httpMethod = "POST")
+  @PostMapping("/forceLogout")
+  public IMOOCJSONResult forceLogout(@RequestParam String userIds) {
+    if (StringUtils.isNotBlank(userIds)) {
+      for (String uid : userIds.split(",")) {
+        log.info("send logout message, uid={}", uid);
+        producer.output().send(MessageBuilder.withPayload(uid).build());
+      }
+    }
     return IMOOCJSONResult.ok();
   }
 

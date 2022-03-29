@@ -58,14 +58,19 @@ public class AuthServiceImpl implements com.imooc.auth.service.AuthService {
 
   @Override
   public AuthResponse delete(@RequestBody Account account) {
-    AuthResponse token = verify(account);
     AuthResponse resp = new AuthResponse();
-    if (SUCCESS.getCode().equals(token.getCode())) {
+    resp.setCode(SUCCESS.getCode());
+
+    if (account.isSkipVerification()) {
       redisTemplate.delete(USER_TOKEN + account.getUserId());
-      redisTemplate.delete(account.getRefreshToken());
-      resp.setCode(SUCCESS.getCode());
     } else {
-      resp.setCode(USER_NOT_FOUND.getCode());
+      AuthResponse token = verify(account);
+      if (SUCCESS.getCode().equals(token.getCode())) {
+        redisTemplate.delete(USER_TOKEN + account.getUserId());
+        redisTemplate.delete(account.getRefreshToken());
+      } else {
+        resp.setCode(USER_NOT_FOUND.getCode());
+      }
     }
     return resp;
   }

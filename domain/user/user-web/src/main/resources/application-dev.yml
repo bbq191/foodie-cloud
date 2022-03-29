@@ -20,6 +20,19 @@ spring:
     # 集群模式
   #    cluster:
   #      nodes: localhost:6379,localhost:6379
+  ############################################################
+  # Stream配置
+  ############################################################
+  cloud:
+    stream:
+      bindings:
+        force-logout-consumer:
+          destination: force-logout-topic
+          group: force-logout-group
+          consumer:
+            max-attempts: 2
+        force-logout-producer:
+          destination: force-logout-topic
 ############################################################
 #web访问端口号 约定：8088
 ############################################################
